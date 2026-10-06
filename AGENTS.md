@@ -21,6 +21,10 @@ Do not include credentials or credential-store files in commits or tool output.
 - Official resources: https://aimo-interp.github.io/ and
   https://github.com/aimo-interp/getting-started#evaluation-environment.
 - Leaderboard view: https://aimo-interp.github.io/#leaderboard.
+- User clarification: `https://huggingface.co/datasets/aimo-interp/problems-public`
+  is private and is not intended to be public, despite its repository name and
+  its mention in the historical proposal. Do not describe it as a public release
+  or assume its symbolic templates are available to participants.
 
 # Useful Discord history (2026)
 
@@ -40,6 +44,18 @@ Do not include credentials or credential-store files in commits or tool output.
   balanced per problem and per model, a cleared/repopulated leaderboard, and release
   of a complementary training set. Scores across leaderboard resets are not directly
   comparable. Reasoning-effort metadata was added to the submission interface.
+- Undated clarification supplied by the user: runfme asked, "Hi! May
+  self-generated mathematical perturbations and resulting model robustness labels
+  be used only for validation or training?" Michael Stefanik replied:
+  "Hi @runfme, you can use those for anything. Note that we have removed the rule
+  on the training data from the official rules listed on the website, hoping to
+  incentivize whitebox and light-weight methods with some constraints on the
+  evaluation time. Just be careful not to overfit the existing validation sets as
+  the final scoring will be done on the new problems."
+  Self-generated mathematical perturbations and resulting model robustness labels
+  are therefore permitted for both training and validation. Do not apply the
+  proposal's historical restriction on extra labeled training data; evaluation
+  time constraints still apply, and methods should generalize to new problems.
 
 # Current model set and callable contract
 
