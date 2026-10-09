@@ -38,65 +38,51 @@ version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "accelerate" },
-    { name = "huggingface-hub" },
-    { name = "joblib" },
-    { name = "pandas" },
-    { name = "safetensors" },
-    { name = "scikit-learn" },
-    { name = "tokenizers" },
-    { name = "torch" },
-    { name = "transformers" },
-]
-
-[package.dev-dependencies]
-cuda-build = [
-    { name = "cuda-toolkit", extra = ["cccl", "crt", "cudart", "nvcc", "nvvm"] },
-    { name = "ninja" },
-    { name = "setuptools" },
-    { name = "wheel" },
-]
-dev = [
-    { name = "pyarrow" },
-]
-notebooks = [
     { name = "bitsandbytes" },
     { name = "causal-conv1d" },
+    { name = "cuda-toolkit", extra = ["cccl", "crt", "cudart", "nvcc", "nvvm"] },
     { name = "flash-linear-attention" },
+    { name = "huggingface-hub" },
     { name = "ipykernel" },
+    { name = "joblib" },
     { name = "math-verify", extra = ["antlr4-13-2"] },
     { name = "nbclient" },
     { name = "nbformat" },
+    { name = "ninja" },
+    { name = "pandas" },
+    { name = "pyarrow" },
+    { name = "safetensors" },
+    { name = "scikit-learn" },
+    { name = "setuptools" },
+    { name = "tokenizers" },
+    { name = "torch" },
+    { name = "transformers" },
+    { name = "wheel" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "accelerate", specifier = "==1.13.0" },
-    { name = "huggingface-hub", specifier = "==1.22.0" },
-    { name = "joblib", specifier = "==1.5.3" },
-    { name = "pandas", specifier = "==3.0.3" },
-    { name = "safetensors", specifier = "==0.8.0" },
-    { name = "scikit-learn", specifier = "==1.8.0" },
-    { name = "tokenizers", specifier = "==0.22.2" },
-    { name = "torch", specifier = "~=2.12.1" },
-    { name = "transformers", specifier = "==5.13.0" },
-]
-
-[package.metadata.requires-dev]
-cuda-build = [
-    { name = "cuda-toolkit", extras = ["cccl", "crt", "cudart", "nvcc", "nvvm"], specifier = "==13.0.2" },
-    { name = "ninja", specifier = ">=1.13.2" },
-    { name = "setuptools", specifier = ">=70" },
-    { name = "wheel", specifier = ">=0.48.0" },
-]
-dev = [{ name = "pyarrow", specifier = ">=17" }]
-notebooks = [
     { name = "bitsandbytes", specifier = ">=0.50.2" },
     { name = "causal-conv1d", specifier = ">=1.7.0" },
+    { name = "cuda-toolkit", extras = ["cccl", "crt", "cudart", "nvcc", "nvvm"], specifier = "==13.0.2" },
     { name = "flash-linear-attention", specifier = ">=0.5.2" },
+    { name = "huggingface-hub", specifier = "==1.22.0" },
     { name = "ipykernel", specifier = ">=7.4.0" },
+    { name = "joblib", specifier = "==1.5.3" },
     { name = "math-verify", extras = ["antlr4-13-2"], specifier = ">=0.8.0" },
     { name = "nbclient", specifier = ">=0.11.0" },
     { name = "nbformat", specifier = ">=5.11.1" },
+    { name = "ninja", specifier = ">=1.13.2" },
+    { name = "pandas", specifier = "==3.0.3" },
+    { name = "pyarrow", specifier = ">=17" },
+    { name = "safetensors", specifier = "==0.8.0" },
+    { name = "scikit-learn", specifier = "==1.8.0" },
+    { name = "setuptools", specifier = ">=70" },
+    { name = "tokenizers", specifier = "==0.22.2" },
+    { name = "torch", specifier = "~=2.12.1" },
+    { name = "transformers", specifier = "==5.13.0" },
+    { name = "wheel", specifier = ">=0.48.0" },
 ]
 
 [[package]]

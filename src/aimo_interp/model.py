@@ -1,6 +1,6 @@
 """Local Qwen loading, prompt formatting, and generation for the notebooks.
 
-Use the uv notebooks dependency group. Loading defaults to the pinned cached
+Use the project uv environment. Loading defaults to the pinned cached
 checkpoint, with all weights on GPU and 4-bit NF4 quantization.
 """
 

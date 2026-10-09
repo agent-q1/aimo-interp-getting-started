@@ -555,14 +555,15 @@ The perturbation script prints a JSON list with `perturbation_type` and `reply`.
 
 Experiment artifacts live under the Git-tracked `data_artifacts/` directory:
 `train-main-v2/train_allowed.parquet` (and its provenance metadata),
-`prompt_perturbations/`, and `evaluations/`. Raw training data, reference solutions,
-and model downloads remain under `data/`. Run
+`train-main-v2/solved.parquet`, `prompt_perturbations/`, and `evaluations/`.
+Raw training data and model downloads remain under `data/`. Run
 `uv run scripts/create_train_allowed.py` to regenerate the allowed split.
 
 `notebooks/evaluate_qwen_on_perturbed_data.ipynb` filters the labeled variants to
 Qwen and the allowed problem IDs, joins reference answers from
-`data/train-main-v2/solved.parquet`, and runs the local 4-bit model. Install the
-notebook dependencies with `uv sync --group notebooks`.
+`data_artifacts/train-main-v2/solved.parquet`, and runs the local 4-bit model. Install the
+dependencies with `uv sync`. All project tools share one environment; on a fresh
+CUDA machine, use `bash scripts/install_fast_kernels.sh` to build the fast kernels.
 
 `aimo_interp.evaluation.evaluate` accepts a problem, scaffolding prompt, model,
 and callable scorer, with the tokenizer supplied by keyword. `MathVerifyScorer`
