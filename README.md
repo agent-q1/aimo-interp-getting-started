@@ -514,6 +514,7 @@ locally with the same Docker image.
 ```text
 components/             the Codabench ingestion and scoring programs, used by run_local.py
 data/val-sample/        generated public validation import (ignored)
+data_artifacts/         versioned allowed split, perturbations and evaluation outputs
 src/aimo_interp/     reusable Codex and problem-perturbation helpers
 scripts/                dataset importer, local runner, and archive builder
 solutions/              example methods, including the trained probe
@@ -552,6 +553,12 @@ The perturbation script prints a JSON list with `perturbation_type` and `reply`.
 
 ### Evaluate perturbed answers
 
+Experiment artifacts live under the Git-tracked `data_artifacts/` directory:
+`train-main-v2/train_allowed.parquet` (and its provenance metadata),
+`prompt_perturbations/`, and `evaluations/`. Raw training data, reference solutions,
+and model downloads remain under `data/`. Run
+`uv run scripts/create_train_allowed.py` to regenerate the allowed split.
+
 `notebooks/evaluate_qwen_on_perturbed_data.ipynb` filters the labeled variants to
 Qwen and the allowed problem IDs, joins reference answers from
 `data/train-main-v2/solved.parquet`, and runs the local 4-bit model. Install the
@@ -571,7 +578,7 @@ Try a batch size of 2 first on an 8 GB GPU, then increase as memory permits.
 
 After each batch, the notebook checkpoints responses, correctness, extraction
 status and generation diagnostics to
-`data/evaluations/qwen_perturbed_fixed_batch_results.parquet`. Rerunning resumes
+`data_artifacts/evaluations/qwen_perturbed_fixed_batch_results.parquet`. Rerunning resumes
 completed rows; a metadata file checks input hashes and run settings before reuse.
 These results measure answer accuracy under the local generation settings and
 assume perturbations preserve the reference answer.

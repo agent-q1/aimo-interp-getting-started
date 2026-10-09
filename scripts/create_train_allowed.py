@@ -9,7 +9,9 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import Bounds, LinearConstraint, milp
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "train-main-v2"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = REPO_ROOT / "data" / "train-main-v2"
+ARTIFACT_DIR = REPO_ROOT / "data_artifacts" / "train-main-v2"
 SEED = 42
 
 
@@ -62,11 +64,12 @@ def main() -> None:
     allowed = frame.loc[selected]
     assert len(allowed) == len(frame) // 2
     assert set(allowed["problem"]).isdisjoint(frame.loc[~selected, "problem"])
-    destination = DATA_DIR / "train_allowed.parquet"
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    destination = ARTIFACT_DIR / "train_allowed.parquet"
     allowed.to_parquet(destination, index=False)
     metadata = {
         **json.loads((DATA_DIR / "metadata.json").read_text()),
-        "source_file": str(source.relative_to(DATA_DIR)),
+        "source_file": str(source.relative_to(REPO_ROOT)),
         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "method": "Exact half by rows; group identical problems; minimize model/label/effort deviations",
         "seed": SEED,
