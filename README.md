@@ -549,3 +549,29 @@ uv run scripts/llm_perturb.py "What is 2 + 2?" --types rephrase distract
 ```
 
 The perturbation script prints a JSON list with `perturbation_type` and `reply`.
+
+### Evaluate perturbed answers
+
+`notebooks/evaluate_qwen_on_perturbed_data.ipynb` filters the labeled variants to
+Qwen and the allowed problem IDs, joins reference answers from
+`data/train-main-v2/solved.parquet`, and runs the local 4-bit model. Install the
+notebook dependencies with `uv sync --group notebooks`.
+
+`aimo_interp.evaluation.evaluate` accepts a problem, scaffolding prompt, model,
+and callable scorer, with the tokenizer supplied by keyword. `MathVerifyScorer`
+binds a reference answer and uses Math-Verify to compare the last boxed answer
+in the final response. Unfinished thinking and missing answers score false.
+The reference answer is never passed to the model.
+
+The notebook uses `evaluate_batch` with configurable `BATCH_SIZE` (default 4).
+Each fixed batch runs in one generation call and waits for its longest response.
+Token counts exclude padding after EOS; batch throughput counts useful output
+tokens across all prompts. Per-row elapsed time is the shared batch wall time.
+Try a batch size of 2 first on an 8 GB GPU, then increase as memory permits.
+
+After each batch, the notebook checkpoints responses, correctness, extraction
+status and generation diagnostics to
+`data/evaluations/qwen_perturbed_fixed_batch_results.parquet`. Rerunning resumes
+completed rows; a metadata file checks input hashes and run settings before reuse.
+These results measure answer accuracy under the local generation settings and
+assume perturbations preserve the reference answer.
