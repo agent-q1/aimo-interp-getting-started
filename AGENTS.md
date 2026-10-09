@@ -1,6 +1,11 @@
 # Project context
 
-This checkout is `/workspace/getting-started`. Use `/workspace` for repositories,
+Locally, use the current checkout and its `.venv`, run Python with `uv run`, and
+store model downloads and large outputs under the ignored `data/` directory.
+Use `data/huggingface` for the local Hugging Face cache and uv's default local cache.
+
+The following `/workspace` paths apply only on the remote machine:
+the remote checkout is `/workspace/getting-started`. Use `/workspace` for repositories,
 virtual environments, model caches, and large outputs; the root filesystem is small.
 Run Python with `uv run`. The project environment is `.venv`.
 For existing cached models, use `HF_HOME=/workspace/getting-started/data/huggingface`.

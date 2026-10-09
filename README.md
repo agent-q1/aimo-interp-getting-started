@@ -106,7 +106,30 @@ real artifact, package a submission, and validate it. To write your own method,
 copy `solutions/trained-probe/` and replace the implementation behind
 `are_robust`.
 
+## Local inference kernels
+
+For local Qwen notebook inference, enable the optional DeltaNet CUDA kernels with
+`bash scripts/install_fast_kernels.sh`, then restart the notebook kernel. The
+script uses uv-managed CUDA 13.0 build tools and compiles `causal-conv1d` against
+the project's pinned PyTorch. Model loading reports `DeltaNet fast path: True`
+when the optimized kernels are active. These packages are local notebook tools,
+not dependencies supplied by the competition runtime.
+
 ## Which data is available?
+
+### Main-track training data
+
+Download the pinned `aimo-interp/train-main-v2` release with:
+
+```bash
+uv run scripts/download_train_main_v2.py
+```
+
+This saves the original `data/*.parquet` files, the dataset card, and
+`metadata.json` (dataset ID and pinned revision) under `data/train-main-v2/`. All 82 rows are
+preserved, including 11 null labels; exclude those from supervised accuracy
+calculations. `notebooks/t1.ipynb` reads this local file to explore Qwen cases.
+This release has a different schema from the historical sample imported below.
 
 ### Public development data
 
@@ -491,8 +514,38 @@ locally with the same Docker image.
 ```text
 components/             the Codabench ingestion and scoring programs, used by run_local.py
 data/val-sample/        generated public validation import (ignored)
+src/aimo_interp/     reusable Codex and problem-perturbation helpers
 scripts/                dataset importer, local runner, and archive builder
 solutions/              example methods, including the trained probe
 Dockerfile.competition  the evaluation runtime (exact package versions)
 pyproject.toml          local dependencies mirroring the runtime versions
 ```
+
+### Codex problem perturbations
+
+The reusable functions live in the `src/aimo_interp` package. uv installs
+the package in editable mode; scripts under `scripts/` only parse arguments,
+call the functions, and print results. Use the installed, authenticated Codex CLI.
+
+```python
+from aimo_interp import PerturbationType, perturb_question
+
+results = perturb_question(
+    "What is 2 + 2?",
+    [PerturbationType.REPHRASE, PerturbationType.DISTRACT],
+)
+for result in results:
+    print(result.perturbation_type.value, result.reply)
+```
+
+Each requested type makes one independent call using the original question;
+the transformations are not chained. The prompts request answer preservation,
+but the function does not verify it. Available types are `rephrase`, `rename`,
+`domain`, `distract`, and `typos`.
+
+```bash
+uv run scripts/codex_prompt.py "Paraphrase: What is the capital of France?"
+uv run scripts/llm_perturb.py "What is 2 + 2?" --types rephrase distract
+```
+
+The perturbation script prints a JSON list with `perturbation_type` and `reply`.
