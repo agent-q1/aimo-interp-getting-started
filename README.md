@@ -565,6 +565,10 @@ Qwen and the allowed problem IDs, joins reference answers from
 dependencies with `uv sync`. All project tools share one environment; on a fresh
 CUDA machine, use `bash scripts/install_fast_kernels.sh` to build the fast kernels.
 
+`load_model()` downloads missing files for the pinned Qwen checkpoint into
+`data/huggingface` and reuses that cache on subsequent loads. To require an
+existing cache and disable downloads, pass `local_files_only=True`.
+
 `aimo_interp.evaluation.evaluate` accepts a problem, scaffolding prompt, model,
 and callable scorer, with the tokenizer supplied by keyword. `MathVerifyScorer`
 binds a reference answer and uses Math-Verify to compare the last boxed answer

@@ -1,7 +1,7 @@
 """Local Qwen loading, prompt formatting, and generation for the notebooks.
 
-Use the project uv environment. Loading defaults to the pinned cached
-checkpoint, with all weights on GPU and 4-bit NF4 quantization.
+Use the project uv environment. Loading uses the pinned checkpoint, downloading
+missing files into data/huggingface, with all weights on GPU and 4-bit NF4 quantization.
 """
 
 import faulthandler
@@ -34,9 +34,12 @@ def format_problem(problem: str, scaffolding_prompt: str = ANSWER_INSTRUCTIONS) 
 
 
 def load_model(
-    *, quantization_bits: int = 4, compute_dtype=None, local_files_only: bool = True,
+    *, quantization_bits: int = 4, compute_dtype=None, local_files_only: bool = False,
 ):
-    """Return (model, tokenizer). Restart the notebook kernel before reloading."""
+    """Return (model, tokenizer), caching downloads unless local_files_only=True.
+
+    Restart the notebook kernel before reloading weights.
+    """
     if quantization_bits not in (4, 8):
         raise ValueError("Choose 8-bit or 4-bit weights.")
     if not torch.cuda.is_available():
